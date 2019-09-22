@@ -6,8 +6,8 @@ import (
 	"net/http"
 )
 
-var homeTemplate *template.Template
-var contactTemplate *template.Template
+var homeView *views.View
+var contactView *views.View
 
 func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
@@ -24,17 +24,10 @@ func contact(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	var err error
 
-	homeTemplate, err = template.ParseFiles("views/home.gohtml", "views/layouts/footer.gohtml")
-	if err != nil {
-		panic(err)
-	}
+	homeView = views.NewView("views/home.gohtml")
+	contactView = views.View()
 
-	contactTemplate, err = template.ParseFiles("views/contact.gohtml", "views/layouts/footer.gohtml")
-	if err != nil {
-		panic(err)
-	}
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", home)
